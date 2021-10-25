@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Mon, 25 Oct 2021 00:06:28 +0700
+Source: ntlmrecon-build-deps
+Binary: ntlmrecon-build-deps
+Architecture: all
+Version: 0.4.0-1parrot0
+Distribution: unstable
+Urgency: low
+Maintainer: Equivs Dummy Package Generator <root@localhost.localdomain>
+Changed-By: Equivs Dummy Package Generator <root@localhost.localdomain>
+Description:
+ ntlmrecon-build-deps - build-dependencies for ntlmrecon
+Changes:
+ ntlmrecon-build-deps (0.4.0-1parrot0) unstable; urgency=low
+ .
+   * First version
+Checksums-Sha1:
+ 4924e85ee0b437ccab69251f9a630d61990417fb 2188 ntlmrecon-build-deps_0.4.0-1parrot0_all.deb
+ ffa7dab5b56ba9dbfd99c96e325bb6b6754c2a2d 5454 ntlmrecon-build-deps_0.4.0-1parrot0_amd64.buildinfo
+Checksums-Sha256:
+ f3955b65d1488bf06de7bfb50ae9bc2469464fe01f715c7d1aa423d5e0341853 2188 ntlmrecon-build-deps_0.4.0-1parrot0_all.deb
+ 70dcf5f9f5224c4eae759cdf52c84650d768a3d9db8729ded6affc957cc64b6e 5454 ntlmrecon-build-deps_0.4.0-1parrot0_amd64.buildinfo
+Files:
+ 61c5eeabb196fa92570b48841b3696f3 2188 devel optional ntlmrecon-build-deps_0.4.0-1parrot0_all.deb
+ a2c06e11dbc5ba30ca6a6fd13a592005 5454 devel optional ntlmrecon-build-deps_0.4.0-1parrot0_amd64.buildinfo

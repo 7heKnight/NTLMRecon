@@ -1,0 +1,4 @@
+colorama
+iptools
+requests
+termcolor

@@ -1,0 +1,92 @@
+#!/bin/bash
+# Quick pkg build scripts to handle automation build
+# Depends: gbp-buildpackage (gbp)
+# Depends: dpkg-dev (dpkg-source)
+# Depends: devscripts (mk-build-deps, debuild)
+# Depends: apt, grep, cut
+
+
+
+function apt_install_deps() {
+  missing_pkgs=""
+  which gbp 1>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "Command gbp not found. Missing gbp-buildpackage!"
+    missing_pkgs="gbp-buildpackage $missing_pkgs"
+  fi
+
+  which dpkg-source 1>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "Command dpkg-source not found. Missing dpkg-dev!"
+    missing_pkgs="dpkg-dev $missing_pkgs"
+  fi
+
+  which debuild 1>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "Command debuild not found. Missing devscripts!"
+    missing_pkgs="devscripts $missing_pkgs"
+  fi
+
+  if [ -z "$missing_pkgs" ]; then
+    echo "No missing commands found"
+  else
+    echo "Installing missing packages \"$missing_pkgs\""
+    sudo apt update
+    sudo apt install devscripts git-buildpackage
+  fi
+}
+
+function pkgbuild_check_pwd() {
+  if [ ! -d "debian" ]; then
+    echo "Folder \"debian\" not found. Is this a Debianized folder?"
+    exit 1
+  fi
+}
+
+
+function pkgbuild_install_deps() {
+  # Install build dependencies for current project
+  # Flags: -i: install
+  # -t "apt -y": Install command. We uses this to install packages automatically
+  sudo mk-build-deps -i -t "apt -y"
+}
+
+
+function pkgbuild_autobuild() {
+  # Build package
+  # -us: ignore source signing
+  # -uc: ignore changes signing
+  # -b: Build binary
+  # -tc: Remove generated files during pkg build time
+  debuild -us -uc -tc -b
+}
+
+
+function pkgbuild_export_source() {
+  # Generate orig file and dsc files
+  gbp export-orig
+  dpkg-source -b .
+}
+
+
+function pkgbuild_find_deps(){
+  # Find generated dependencies pkg and try remove it
+  to_remove=$(apt search --names-only "\-build-deps" -t now 2>/dev/null | grep local | cut -d "/" -f 1)
+  if [ -z "$to_remove" ]; then
+    echo "Can't find dependencies to remove"
+  else
+    sudo apt remove "$to_remove" --autoremove -y
+  fi
+}
+
+apt_install_deps
+pkgbuild_check_pwd
+pkgbuild_install_deps
+pkgbuild_autobuild
+
+if [ $? -eq 0 ]; then
+  pkgbuild_export_source
+else
+  echo "Failed to build package. Don't generate source files."
+fi
+pkgbuild_find_deps

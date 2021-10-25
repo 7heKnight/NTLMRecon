@@ -1,7 +1,7 @@
 git clone https://github.com/7heKnight/NTLMRecon.git
 cd NTLMRecon/
 wget https://github.com/pwnfoo/NTLMRecon/archive/refs/tags/v-0.4.tar.gz
-tar -xvzf v-0.4.tar.gz
+gbp --import ../v-0.4.tar.gz
 dh_make -p NTLMRecon_0.4.0 -c mit --createorig
   python
 config control, changelog, copyright on debian
